@@ -1,2 +1,4 @@
-package edu.co.icesi.model;public class Node {
+package edu.co.icesi.model;
+
+public class Node {
 }

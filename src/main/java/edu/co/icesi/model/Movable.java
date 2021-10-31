@@ -1,2 +1,5 @@
-package edu.co.icesi.model;public interface Movable {
+package edu.co.icesi.model;
+
+public interface Movable {
+    void movePlayer();
 }
