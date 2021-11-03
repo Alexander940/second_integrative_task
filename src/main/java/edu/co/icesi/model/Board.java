@@ -12,8 +12,6 @@ public class Board {
     private int dimension;
     private int numSnakes;
     private int numLadders;
-    private Node firstSnake;
-    private Node firstLadder;
     private Node head;
     private Node tail;
 
@@ -30,8 +28,8 @@ public class Board {
         this.numSnakes = numSnakes;
         head = new Node(1);
         createBoard(head, 2);
-        createFirstSnake();
-        createSnakes(firstSnake, 1);
+        createSnakes(0);
+        createLadders(0);
     }
 
     /**
@@ -54,37 +52,50 @@ public class Board {
         }
     }
 
-    private void createSnakes(Node prev, int i){
+    private void createSnakes(int i){
         if(i<numSnakes){
             int initPosition = getInitPosition();
             Node init = get(initPosition,1, head);
 
-            int endPosition = (int) (Math.random()*initPosition+1);
+            int endPosition = (int) (Math.random() * initPosition);
             Node end = get(endPosition, 1, head);
-
-            Node current = new Node(i,new Snake(init, end));
-            prev.setNext(current);
-            current.setPrev(prev);
-            createSnakes(current, i+1);
+            if(init.getSnakeTail() == null && init.getSnakeHead() == null && end.getSnakeHead() == null && end.getSnakeTail() == null){
+                init.setSnakeTail(end);
+                end.setSnakeHead(init);
+                init.setSnake((char)(i+65));
+                end.setSnake((char)(i+65));
+                createSnakes(i + 1);
+            } else {
+                createSnakes(i);
+            }
         }
     }
 
-    private void createLadders(){
+    private void createLadders(int i){
+        if(i<numLadders){
+            int initPosition = getInitPosition();
+            Node init = get(initPosition,1, head);
 
+            int rank = dimension-initPosition;
+
+            int endPosition = (int) (Math.random()*rank);
+            Node end = get(endPosition+initPosition, 1, head);
+
+            if(init.getSnakeTail() == null && init.getSnakeHead() == null && end.getSnakeHead() == null && end.getSnakeTail() == null
+                    && init.getLadderTop() == null && init.getLadderBottom() == null && end.getLadderTop() == null && end.getLadderBottom() == null){
+                init.setLadderTop(end);
+                end.setLadderBottom(init);
+                init.setLadder((char)(i+48));
+                end.setLadder((char)(i+48));
+                createLadders(i+1);
+            } else {
+                createLadders(i);
+            }
+        }
     }
 
     public Node getTail() {
         return tail;
-    }
-
-    private void createFirstSnake(){
-        int initPosition = getInitPosition();
-        Node init = get(initPosition,1, head);
-
-        int endPosition = (int) (Math.random()*initPosition+1);
-        Node end = get(endPosition, 1, head);
-
-        firstSnake = new Node(0,new Snake(init, end));
     }
 
     public Node get(int position, int i, Node current){
@@ -104,9 +115,5 @@ public class Board {
 
     private int getInitPosition(){
         return (int) (Math.random()*dimension);
-    }
-
-    public Node getFirstSnake() {
-        return firstSnake;
     }
 }

@@ -23,9 +23,4 @@ public class BoardTest {
     public void get_a_box() {
         assertEquals(10, board.get(10, 1, board.getHead()).getPosition());
     }
-
-    @Test
-    public void when_it_create_the_snakes() {
-        assertEquals(1, board.get(1, 0, board.getFirstSnake()).getPosition());
-    }
 }

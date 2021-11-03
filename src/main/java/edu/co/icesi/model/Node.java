@@ -7,19 +7,14 @@ public class Node {
     private int position;
     private Node next;
     private Node prev;
-    private Ladder ladder;
-    private Snake snake;
+    private Node ladderTop;
+    private Node ladderBottom;
+    private Node snakeHead;
+    private Node snakeTail;
+    private char snake;
+    private char ladder;
 
     public Node(int position) {
-        this.position = position;
-    }
-
-    public Node(Ladder ladder) {
-        this.ladder = ladder;
-    }
-
-    public Node(int position,Snake snake) {
-        this.snake = snake;
         this.position = position;
     }
 
@@ -47,16 +42,64 @@ public class Node {
         this.prev = prev;
     }
 
+    public Node getLadderTop() {
+        return ladderTop;
+    }
+
+    public void setLadderTop(Node ladderTop) {
+        this.ladderTop = ladderTop;
+    }
+
+    public Node getLadderBottom() {
+        return ladderBottom;
+    }
+
+    public void setLadderBottom(Node ladderBottom) {
+        this.ladderBottom = ladderBottom;
+    }
+
+    public Node getSnakeHead() {
+        return snakeHead;
+    }
+
+    public void setSnakeHead(Node snakeHead) {
+        this.snakeHead = snakeHead;
+    }
+
+    public Node getSnakeTail() {
+        return snakeTail;
+    }
+
+    public void setSnakeTail(Node snakeTail) {
+        this.snakeTail = snakeTail;
+    }
+
+    public char getSnake() {
+        return snake;
+    }
+
+    public void setSnake(char snake) {
+        this.snake = snake;
+    }
+
+    public char getLadder() {
+        return ladder;
+    }
+
+    public void setLadder(char ladder) {
+        this.ladder = ladder;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Node node = (Node) o;
-        return position == node.position && Objects.equals(next, node.next) && Objects.equals(prev, node.prev) && Objects.equals(ladder, node.ladder) && Objects.equals(snake, node.snake);
+        return position == node.position && Objects.equals(next, node.next) && Objects.equals(prev, node.prev) && Objects.equals(ladder, node.ladder) && Objects.equals(snakeHead, node.snakeHead) && Objects.equals(snakeTail, node.snakeTail);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(position, next, prev, ladder, snake);
+        return Objects.hash(position, next, prev, ladder, snakeHead, snakeTail);
     }
 }
