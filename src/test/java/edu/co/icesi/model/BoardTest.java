@@ -11,7 +11,7 @@ public class BoardTest {
 
     @Before
     public void setUpStage1(){
-        board = new Board(5,4, 2, 1);
+        board = new Board(5,4, 2, 1,1);
     }
 
     @Test

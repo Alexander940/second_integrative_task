@@ -15,12 +15,13 @@ public class Board {
     private Node head;
     private Node tail;
 
+
     /**
      * This is the constructor
      * @param numRows
      * @param numColumns
      */
-    public Board(int numRows, int numColumns, int numSnakes, int numLadders) {
+    public Board(int numRows, int numColumns, int numSnakes, int numLadders, int numPlayers) {
         this.numRows = numRows;
         this.numColumns = numColumns;
         this.dimension = numColumns*numRows;
@@ -116,4 +117,6 @@ public class Board {
     private int getInitPosition(){
         return (int) (Math.random()*dimension);
     }
+
+
 }

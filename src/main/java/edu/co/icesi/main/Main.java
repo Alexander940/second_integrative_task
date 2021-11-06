@@ -22,7 +22,7 @@ public class Main {
      */
     public static void main(String[] args) {
         Main principal = new Main();
-        principal.board = new Board(5,4,2,2);
+        principal.board = new Board(5,4,2,2, 1);
         /*do{
 
         }while(true);*/

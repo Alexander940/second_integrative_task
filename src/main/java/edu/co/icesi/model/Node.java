@@ -13,6 +13,11 @@ public class Node {
     private Node snakeTail;
     private char snake;
     private char ladder;
+    private Player player;
+
+    public Node(Player player) {
+        this.player = player;
+    }
 
     public Node(int position) {
         this.position = position;
@@ -88,6 +93,14 @@ public class Node {
 
     public void setLadder(char ladder) {
         this.ladder = ladder;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 
     @Override
