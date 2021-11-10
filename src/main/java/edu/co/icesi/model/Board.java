@@ -142,7 +142,7 @@ public class Board {
         int movePlayerBy=rollDice();
         char player=getPlayerToPlay(1,'A');
         String msg="";
-        Node previewPos = prevPlayerPos(player,1);
+        Node previewPos = prevPlayerPos(player,1,null);
         int newNodePos = previewPos.getPosition()+movePlayerBy;
         if(newNodePos>=dimension){
             msg+="Player " + player + " won\n";
@@ -188,34 +188,32 @@ public class Board {
         if(nodeToSetPlayer.getPlayersOnNode()==null){
             String addFirstPlayer= "" + playerToAdd;
             nodeToSetPlayer.setPlayersOnNode(addFirstPlayer);
-            Node prev= prevPlayerPos(playerToAdd,1);
+            Node prev= prevPlayerPos(playerToAdd,1,null);
             String newPlayersOnNode=prev.getPlayersOnNode().replaceAll(String.valueOf(playerToAdd),"");
             prev.setPlayersOnNode(newPlayersOnNode);
         }
         else{
             String players= nodeToSetPlayer.getPlayersOnNode() + playerToAdd;
             nodeToSetPlayer.setPlayersOnNode(players);
-            Node prev= prevPlayerPos(playerToAdd,1);
+            Node prev= prevPlayerPos(playerToAdd,1,null);
             String newPlayersOnNode=prev.getPlayersOnNode().replaceAll(String.valueOf(playerToAdd),"");
             prev.setPlayersOnNode(newPlayersOnNode);
         }
     }
 
-    private Node prevPlayerPos(char player,int i){
-        Node current=null;
+    private Node prevPlayerPos(char player,int i,Node current){
         if(i<dimension){
             current = get(i, 1, head);
             String playersOnNode = current.getPlayersOnNode();
             if(playersOnNode==null){
-                prevPlayerPos(player,i+1);
+                return prevPlayerPos(player,i+1,current);
             }
             else if(playersOnNode.equalsIgnoreCase("")){
-                prevPlayerPos(player,i+1);
+                return prevPlayerPos(player,i+1,current);
             }
             else if(isPlayerInNode(player,playersOnNode,0)==true){
                 return current;
             }
-            prevPlayerPos(player,i+1);
         }
         return current;
     }

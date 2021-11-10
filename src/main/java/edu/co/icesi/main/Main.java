@@ -51,6 +51,7 @@ public class Main {
                     sc.nextLine();
                     System.out.println(printActiveBoard(userBoard,"",0,0,userBoard.getDimension()));
                     startPlaying(userBoard,parts[4]);
+                    System.out.println("The game has ended!");
                 }
                 else{
                     System.out.println("Please register valid parameters\n");
@@ -80,10 +81,14 @@ public class Main {
         }
         else if(currentBoard.getFinishGame()==false){
             System.out.println(currentBoard.movePlayer());
-            System.out.println(printActiveBoard(currentBoard,"",0,0,currentBoard.getDimension()));
-            startPlaying(currentBoard,players);
+            if(currentBoard.getFinishGame()==true) {
+                return;
+            }
+            else {
+                System.out.println(printActiveBoard(currentBoard, "", 0, 0, currentBoard.getDimension()));
+                startPlaying(currentBoard, players);
+            }
         }
-        System.out.println("The game has ended!");
     }
 
     private String printBoard(Board boardToPrint,String msg,int rows,int cols,int nodes,String players){
