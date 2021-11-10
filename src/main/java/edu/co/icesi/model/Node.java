@@ -11,6 +11,7 @@ public class Node {
     private Node ladderBottom;
     private Node snakeHead;
     private Node snakeTail;
+    private String playersOnNode;
     private char snake;
     private char ladder;
     private Player player;
@@ -93,6 +94,14 @@ public class Node {
 
     public void setLadder(char ladder) {
         this.ladder = ladder;
+    }
+
+    public String getPlayersOnNode() {
+        return playersOnNode;
+    }
+
+    public void setPlayersOnNode(String playersOnNode) {
+        this.playersOnNode = playersOnNode;
     }
 
     public Player getPlayer() {
