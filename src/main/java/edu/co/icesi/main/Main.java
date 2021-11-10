@@ -50,7 +50,8 @@ public class Main {
                     System.out.println(printBoard(userBoard, "", 0, 0, userBoard.getDimension(), parts[4]));
                     sc.nextLine();
                     System.out.println(printActiveBoard(userBoard,"",0,0,userBoard.getDimension()));
-                    startPlaying(userBoard,parts[4]);
+                    String instruction=sc.nextLine();
+                    startPlaying(userBoard,parts[4],0,instruction);
                     System.out.println("The game has ended!");
                 }
                 else{
@@ -69,25 +70,29 @@ public class Main {
         }
     }
 
-    private void startPlaying(Board currentBoard,String players){
-        String instruction= sc.nextLine();
+    private void startPlaying(Board currentBoard,String players,int i,String instruction){
         if(instruction.equalsIgnoreCase("num")){
             System.out.println(printBoard(currentBoard,"",0,0, currentBoard.getDimension(),players));
-            startPlaying(currentBoard,players);
+            instruction= sc.nextLine();
+            startPlaying(currentBoard,players,i,instruction);
         }
         else if(instruction.equalsIgnoreCase("menu")){
             menu();
             return;
         }
         else if(currentBoard.getFinishGame()==false){
-            System.out.println(currentBoard.movePlayer());
-            if(currentBoard.getFinishGame()==true) {
-                return;
-            }
-            else {
-                System.out.println(printActiveBoard(currentBoard, "", 0, 0, currentBoard.getDimension()));
-                startPlaying(currentBoard, players);
-            }
+                if(i<players.length()){
+                    System.out.println(currentBoard.movePlayer(players.charAt(i)));
+                    if(currentBoard.getFinishGame()==true) {
+                        return;
+                    }
+                    else {
+                        System.out.println(printActiveBoard(currentBoard, "", 0, 0, currentBoard.getDimension()));
+                        instruction= sc.nextLine();
+                        startPlaying(currentBoard,players,i+1,instruction);
+                    }
+                }
+            startPlaying(currentBoard,players,0,"");
         }
     }
 

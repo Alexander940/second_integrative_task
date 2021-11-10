@@ -138,9 +138,9 @@ public class Board {
         return false;
     }
 
-    public String movePlayer(){
+    public String movePlayer(char playerToplay){
         int movePlayerBy=rollDice();
-        char player=getPlayerToPlay(1,'A');
+        char player=playerToplay;
         String msg="";
         Node previewPos = prevPlayerPos(player,1,null);
         int newNodePos = previewPos.getPosition()+movePlayerBy;
