@@ -166,17 +166,17 @@ public class Board {
         if(i<dimension){
             Node current = get(i, 1, head);
             if(current.getPlayersOnNode()==null){
-                getPlayerToPlay(i+1,player);
+                return getPlayerToPlay(i+1,player);
             }
             else if(current.getPlayersOnNode().equalsIgnoreCase("")){
-                getPlayerToPlay(i+1,player);
+                return getPlayerToPlay(i+1,player);
             }
             else {
                 if (current.getPlayersOnNode() != null) {
                     player= current.getPlayersOnNode().charAt(0);
                 }
                 else{
-                    getPlayerToPlay(i+1,player);
+                    return getPlayerToPlay(i+1,player);
                 }
             }
         }
