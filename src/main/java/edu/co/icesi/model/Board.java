@@ -183,7 +183,8 @@ public class Board {
             String players= nodeToSetPlayer.getPlayersOnNode() + playerToAdd;
             nodeToSetPlayer.setPlayersOnNode(players);
             Node prev= prevPlayerPos(playerToAdd,1);
-            prev.getPlayersOnNode().replaceAll(String.valueOf(playerToAdd),"");
+            String newPlayersOnNode=prev.getPlayersOnNode().replaceAll(String.valueOf(playerToAdd),"");
+            prev.setPlayersOnNode(newPlayersOnNode);
         }
     }
 
