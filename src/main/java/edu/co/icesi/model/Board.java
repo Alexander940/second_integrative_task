@@ -174,6 +174,7 @@ public class Board {
             else {
                 if (current.getPlayersOnNode() != null) {
                     player= current.getPlayersOnNode().charAt(0);
+                    return player;
                 }
                 else{
                     return getPlayerToPlay(i+1,player);
@@ -205,7 +206,13 @@ public class Board {
         if(i<dimension){
             current = get(i, 1, head);
             String playersOnNode = current.getPlayersOnNode();
-            if(isPlayerInNode(player,playersOnNode,0)==true){
+            if(playersOnNode==null){
+                prevPlayerPos(player,i+1);
+            }
+            else if(playersOnNode.equalsIgnoreCase("")){
+                prevPlayerPos(player,i+1);
+            }
+            else if(isPlayerInNode(player,playersOnNode,0)==true){
                 return current;
             }
             prevPlayerPos(player,i+1);
@@ -214,10 +221,7 @@ public class Board {
     }
 
     private boolean isPlayerInNode(char player,String playersOnNode,int i){
-        if(playersOnNode.equalsIgnoreCase("")){
-            isPlayerInNode(player,playersOnNode,i+1);
-        }
-        else if(i<playersOnNode.length()){
+        if(i<playersOnNode.length()){
             if(playersOnNode.charAt(i)==player){
                 return true;
             }

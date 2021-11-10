@@ -76,6 +76,7 @@ public class Main {
         }
         else if(instruction.equalsIgnoreCase("menu")){
             menu();
+            return;
         }
         else if(currentBoard.getFinishGame()==false){
             System.out.println(currentBoard.movePlayer());
