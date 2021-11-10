@@ -14,6 +14,7 @@ public class Board {
     private int dimension;
     private int numSnakes;
     private int numLadders;
+    private boolean finishGame;
     private Node head;
     private Node tail;
     private Random random;
@@ -32,6 +33,7 @@ public class Board {
         this.numSnakes = numSnakes;
         head = new Node(1);
         random= new Random();
+        finishGame=false;
         createBoard(head, 2);
         createSnakes(0);
         createLadders(0);
@@ -136,7 +138,43 @@ public class Board {
         return false;
     }
 
-    public void setPlayerOnNode(char playerToAdd, Node nodeToSetPlayer){
+    public String movePlayer(){
+        int movePlayerBy=rollDice();
+        char player=getPlayerToPlay(1);
+        String msg="";
+        Node previewPos = prevPlayerPos(player,1);
+        int newNodePos = previewPos.getPosition()+movePlayerBy;
+        if(newNodePos>=dimension){
+            msg+="Player " + player + " won\n";
+            finishGame=true;
+        }else {
+            if (get(newNodePos, 1, head).getSnakeTail() != null) {
+                setPlayerOnNode(player, get(newNodePos, 1, head).getSnakeTail());
+                msg+="Player " + player + " got a roll of " + movePlayerBy +"\n";
+            } else if (get(newNodePos, 1, head).getLadderTop() != null) {
+                setPlayerOnNode(player, get(newNodePos, 1, head).getLadderTop());
+                msg+="Player " + player + " got a roll of " + movePlayerBy +"\n";
+            } else {
+                setPlayerOnNode(player, get(newNodePos, 1, head));
+                msg+="Player " + player + " got a roll of " + movePlayerBy +"\n";
+            }
+        }
+        return msg;
+    }
+
+    private char getPlayerToPlay(int i){
+        char player='A';
+        if(i<dimension){
+            Node current = get(i, 1, head);
+            if(current.getPlayersOnNode()!=null){
+                return current.getPlayersOnNode().charAt(0);
+            }
+            getPlayerToPlay(i+1);
+        }
+        return player;
+    }
+
+    private void setPlayerOnNode(char playerToAdd, Node nodeToSetPlayer){
         if(nodeToSetPlayer.getPlayersOnNode()==null){
             String addFirstPlayer= "" + playerToAdd;
             nodeToSetPlayer.setPlayersOnNode(addFirstPlayer);
@@ -150,15 +188,16 @@ public class Board {
     }
 
     private Node prevPlayerPos(char player,int i){
+        Node current=null;
         if(i<dimension){
-            Node current = get(i, 1, head);
+            current = get(i, 1, head);
             String playersOnNode = current.getPlayersOnNode();
             if(isPlayerInNode(player,playersOnNode,0)==true){
                 return current;
             }
             prevPlayerPos(player,i+1);
         }
-        return head;
+        return current;
     }
 
     private boolean isPlayerInNode(char player,String playersOnNode,int i){
@@ -172,7 +211,11 @@ public class Board {
     }
 
     public int rollDice(){
-        return (int)(Math.random()*6)+1;
+        int diceValue = (int)(Math.random()*6)+1;
+        if(diceValue>6){
+            rollDice();
+        }
+        return diceValue;
     }
 
     public Node getTail() {
@@ -208,5 +251,9 @@ public class Board {
 
     public int getDimension() {
         return dimension;
+    }
+
+    public boolean getFinishGame() {
+        return finishGame;
     }
 }

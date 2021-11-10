@@ -46,7 +46,11 @@ public class Main {
             if(Integer.parseInt(parts[0])!=2 || Integer.parseInt(parts[1])!=3) {
                 if ((Integer.parseInt(parts[0]) != 3 || Integer.parseInt(parts[1]) != 2)){
                     userBoard = new Board(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]), Integer.parseInt(parts[2]), Integer.parseInt(parts[3]), 0);
-                    System.out.println(printBoard(userBoard, "", 0, 0, userBoard.getDimension(), parts));
+                    userBoard.getHead().setPlayersOnNode(parts[4]);
+                    System.out.println(printBoard(userBoard, "", 0, 0, userBoard.getDimension(), parts[4]));
+                    sc.nextLine();
+                    printActiveBoard(userBoard,"",0,0,userBoard.getDimension());
+                    startPlaying(userBoard,parts[4]);
                 }
                 else{
                     System.out.println("Please register valid parameters\n");
@@ -64,11 +68,28 @@ public class Main {
         }
     }
 
-    private String printBoard(Board boardToPrint,String msg,int rows,int cols,int nodes,String[] parts){
+    private void startPlaying(Board currentBoard,String players){
+        String instruction= sc.nextLine();
+        if(instruction.equalsIgnoreCase("num")){
+            System.out.println(printBoard(currentBoard,"",0,0, currentBoard.getDimension(),players));
+            startPlaying(currentBoard,players);
+        }
+        else if(instruction.equalsIgnoreCase("menu")){
+            menu();
+        }
+        else if(currentBoard.getFinishGame()==false){
+            System.out.println(printActiveBoard(currentBoard,"",0,0,currentBoard.getDimension()));
+            System.out.println(currentBoard.movePlayer());
+            startPlaying(currentBoard,players);
+        }
+        System.out.println("The game has ended!");
+    }
+
+    private String printBoard(Board boardToPrint,String msg,int rows,int cols,int nodes,String players){
         if(cols<boardToPrint.getNumColumns()){
             if(rows<boardToPrint.getNumRows()){
                 if(nodes==1){
-                    msg += "[" + nodes + parts[4] +"] ";
+                    msg += "[" + nodes + players +"] ";
                 }
                 else if(boardToPrint.get(nodes,1,boardToPrint.getHead()).getSnakeHead()!=null){
                     msg+="["+nodes+ boardToPrint.get(nodes,1,boardToPrint.getHead()).getSnake() + "] ";
@@ -85,12 +106,40 @@ public class Main {
                 else {
                     msg += "[" + nodes + "] ";
                 }
-                return printBoard(boardToPrint,msg,rows+1,cols,nodes-1,parts);
+                return printBoard(boardToPrint,msg,rows+1,cols,nodes-1,players);
             }
             msg+="\n";
-            return printBoard(boardToPrint,msg,0,cols+1,nodes,parts);
+            return printBoard(boardToPrint,msg,0,cols+1,nodes,players);
         }
         return msg;
     }
 
+    private String printActiveBoard(Board boardToPrint,String msg,int rows,int cols,int nodes){
+        if(cols<boardToPrint.getNumColumns()){
+            if(rows<boardToPrint.getNumRows()){
+                msg+="[";
+                if(boardToPrint.get(nodes,1,boardToPrint.getHead()).getSnakeHead()!=null){
+                    msg+=boardToPrint.get(nodes,1,boardToPrint.getHead()).getSnake();
+                }
+                else if(boardToPrint.get(nodes,1,boardToPrint.getHead()).getSnakeTail()!=null){
+                    msg+=boardToPrint.get(nodes,1,boardToPrint.getHead()).getSnake();
+                }
+                else if(boardToPrint.get(nodes,1,boardToPrint.getHead()).getLadderBottom()!=null){
+                    msg+=boardToPrint.get(nodes,1,boardToPrint.getHead()).getLadder();
+                }
+                else if(boardToPrint.get(nodes,1,boardToPrint.getHead()).getLadderTop()!=null){
+                    msg+=boardToPrint.get(nodes,1,boardToPrint.getHead()).getLadder();
+                }
+
+                if(boardToPrint.get(nodes,1,boardToPrint.getHead()).getPlayersOnNode()!=null){
+                    msg+=boardToPrint.get(nodes,1,boardToPrint.getHead()).getPlayersOnNode();
+                }
+                msg+="] ";
+                return printActiveBoard(boardToPrint,msg,rows+1,cols,nodes-1);
+            }
+            msg+="\n";
+            return printActiveBoard(boardToPrint,msg,0,cols+1,nodes);
+        }
+        return msg;
+    }
 }
