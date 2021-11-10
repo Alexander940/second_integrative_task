@@ -138,9 +138,9 @@ public class Board {
         return false;
     }
 
-    public String movePlayer(char playerToplay){
+    public String movePlayer(char playerToPlay){
         int movePlayerBy=rollDice();
-        char player=playerToplay;
+        char player=playerToPlay;
         String msg="";
         Node previewPos = prevPlayerPos(player,1,null);
         int newNodePos = previewPos.getPosition()+movePlayerBy;
@@ -187,17 +187,21 @@ public class Board {
     private void setPlayerOnNode(char playerToAdd, Node nodeToSetPlayer){
         if(nodeToSetPlayer.getPlayersOnNode()==null){
             String addFirstPlayer= "" + playerToAdd;
-            nodeToSetPlayer.setPlayersOnNode(addFirstPlayer);
             Node prev= prevPlayerPos(playerToAdd,1,null);
-            String newPlayersOnNode=prev.getPlayersOnNode().replaceAll(String.valueOf(playerToAdd),"");
-            prev.setPlayersOnNode(newPlayersOnNode);
+            if(nodeToSetPlayer!=prev){
+                nodeToSetPlayer.setPlayersOnNode(addFirstPlayer);
+                String newPlayersOnNode=prev.getPlayersOnNode().replaceAll(String.valueOf(playerToAdd),"");
+                prev.setPlayersOnNode(newPlayersOnNode);
+            }
         }
         else{
             String players= nodeToSetPlayer.getPlayersOnNode() + playerToAdd;
-            nodeToSetPlayer.setPlayersOnNode(players);
             Node prev= prevPlayerPos(playerToAdd,1,null);
-            String newPlayersOnNode=prev.getPlayersOnNode().replaceAll(String.valueOf(playerToAdd),"");
-            prev.setPlayersOnNode(newPlayersOnNode);
+            if(nodeToSetPlayer!=prev){
+                nodeToSetPlayer.setPlayersOnNode(players);
+                String newPlayersOnNode=prev.getPlayersOnNode().replaceAll(String.valueOf(playerToAdd),"");
+                prev.setPlayersOnNode(newPlayersOnNode);
+            }
         }
     }
 
@@ -213,6 +217,9 @@ public class Board {
             }
             else if(isPlayerInNode(player,playersOnNode,0)==true){
                 return current;
+            }
+            else{
+                return prevPlayerPos(player,i+1,current);
             }
         }
         return current;
