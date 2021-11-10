@@ -162,35 +162,14 @@ public class Board {
         return msg;
     }
 
-    private char getPlayerToPlay(int i,char player){
-        if(i<dimension){
-            Node current = get(i, 1, head);
-            if(current.getPlayersOnNode()==null){
-                return getPlayerToPlay(i+1,player);
-            }
-            else if(current.getPlayersOnNode().equalsIgnoreCase("")){
-                return getPlayerToPlay(i+1,player);
-            }
-            else {
-                if (current.getPlayersOnNode() != null) {
-                    player= current.getPlayersOnNode().charAt(0);
-                    return player;
-                }
-                else{
-                    return getPlayerToPlay(i+1,player);
-                }
-            }
-        }
-        return player;
-    }
-
     private void setPlayerOnNode(char playerToAdd, Node nodeToSetPlayer){
         if(nodeToSetPlayer.getPlayersOnNode()==null){
             String addFirstPlayer= "" + playerToAdd;
             Node prev= prevPlayerPos(playerToAdd,1,null);
             if(nodeToSetPlayer!=prev){
                 nodeToSetPlayer.setPlayersOnNode(addFirstPlayer);
-                String newPlayersOnNode=prev.getPlayersOnNode().replaceAll(String.valueOf(playerToAdd),"");
+                isPlayerInNode(playerToAdd, prev.getPlayersOnNode(), 0);
+                String newPlayersOnNode=removePlayer(playerToAdd,prev.getPlayersOnNode(),0);
                 prev.setPlayersOnNode(newPlayersOnNode);
             }
         }
@@ -199,7 +178,7 @@ public class Board {
             Node prev= prevPlayerPos(playerToAdd,1,null);
             if(nodeToSetPlayer!=prev){
                 nodeToSetPlayer.setPlayersOnNode(players);
-                String newPlayersOnNode=prev.getPlayersOnNode().replaceAll(String.valueOf(playerToAdd),"");
+                String newPlayersOnNode=removePlayer(playerToAdd,prev.getPlayersOnNode(),0);
                 prev.setPlayersOnNode(newPlayersOnNode);
             }
         }
@@ -233,6 +212,23 @@ public class Board {
             isPlayerInNode(player,playersOnNode,i+1);
         }
         return false;
+    }
+
+    private String removePlayer(char player,String playersOnNode,int i){
+        if(i<playersOnNode.length()){
+            if(playersOnNode.charAt(i)==player){
+                if(playersOnNode.length()==1){
+                    playersOnNode="";
+                    return playersOnNode;
+                }
+                else {
+                    playersOnNode = playersOnNode.substring(0, i) + playersOnNode.substring(i + 1);
+                    return playersOnNode;
+                }
+            }
+            removePlayer(player,playersOnNode,i+1);
+        }
+        return playersOnNode;
     }
 
     public int rollDice(){
