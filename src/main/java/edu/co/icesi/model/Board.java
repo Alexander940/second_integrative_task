@@ -140,7 +140,7 @@ public class Board {
 
     public String movePlayer(){
         int movePlayerBy=rollDice();
-        char player=getPlayerToPlay(1);
+        char player=getPlayerToPlay(1,'A');
         String msg="";
         Node previewPos = prevPlayerPos(player,1);
         int newNodePos = previewPos.getPosition()+movePlayerBy;
@@ -162,14 +162,23 @@ public class Board {
         return msg;
     }
 
-    private char getPlayerToPlay(int i){
-        char player='A';
+    private char getPlayerToPlay(int i,char player){
         if(i<dimension){
             Node current = get(i, 1, head);
-            if(current.getPlayersOnNode()!=null){
-                return current.getPlayersOnNode().charAt(0);
+            if(current.getPlayersOnNode()==null){
+                getPlayerToPlay(i+1,player);
             }
-            getPlayerToPlay(i+1);
+            else if(current.getPlayersOnNode().equalsIgnoreCase("")){
+                getPlayerToPlay(i+1,player);
+            }
+            else {
+                if (current.getPlayersOnNode() != null) {
+                    player= current.getPlayersOnNode().charAt(0);
+                }
+                else{
+                    getPlayerToPlay(i+1,player);
+                }
+            }
         }
         return player;
     }
@@ -178,6 +187,9 @@ public class Board {
         if(nodeToSetPlayer.getPlayersOnNode()==null){
             String addFirstPlayer= "" + playerToAdd;
             nodeToSetPlayer.setPlayersOnNode(addFirstPlayer);
+            Node prev= prevPlayerPos(playerToAdd,1);
+            String newPlayersOnNode=prev.getPlayersOnNode().replaceAll(String.valueOf(playerToAdd),"");
+            prev.setPlayersOnNode(newPlayersOnNode);
         }
         else{
             String players= nodeToSetPlayer.getPlayersOnNode() + playerToAdd;
@@ -202,7 +214,10 @@ public class Board {
     }
 
     private boolean isPlayerInNode(char player,String playersOnNode,int i){
-        if(i<playersOnNode.length()){
+        if(playersOnNode.equalsIgnoreCase("")){
+            isPlayerInNode(player,playersOnNode,i+1);
+        }
+        else if(i<playersOnNode.length()){
             if(playersOnNode.charAt(i)==player){
                 return true;
             }

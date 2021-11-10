@@ -49,7 +49,7 @@ public class Main {
                     userBoard.getHead().setPlayersOnNode(parts[4]);
                     System.out.println(printBoard(userBoard, "", 0, 0, userBoard.getDimension(), parts[4]));
                     sc.nextLine();
-                    printActiveBoard(userBoard,"",0,0,userBoard.getDimension());
+                    System.out.println(printActiveBoard(userBoard,"",0,0,userBoard.getDimension()));
                     startPlaying(userBoard,parts[4]);
                 }
                 else{
@@ -78,8 +78,8 @@ public class Main {
             menu();
         }
         else if(currentBoard.getFinishGame()==false){
-            System.out.println(printActiveBoard(currentBoard,"",0,0,currentBoard.getDimension()));
             System.out.println(currentBoard.movePlayer());
+            System.out.println(printActiveBoard(currentBoard,"",0,0,currentBoard.getDimension()));
             startPlaying(currentBoard,players);
         }
         System.out.println("The game has ended!");
