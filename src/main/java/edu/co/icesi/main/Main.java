@@ -45,14 +45,14 @@ public class Main {
         String[] parts = board.split(" ");
         if(Integer.parseInt(parts[2])+Integer.parseInt(parts[3])<=(Integer.parseInt(parts[0])*Integer.parseInt(parts[1])-2)/2) {
             if(Integer.parseInt(parts[0])>=3 && Integer.parseInt(parts[1])>=3) {
-                userBoard = new Board(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]), Integer.parseInt(parts[2]), Integer.parseInt(parts[3]), 0);
+                userBoard = new Board(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]), Integer.parseInt(parts[2]), Integer.parseInt(parts[3]));
                 userBoard.getHead().setPlayersOnNode(parts[4]);
                 System.out.println(printBoard(userBoard, "", 0, 0, userBoard.getDimension(), parts[4]));
                 sc.nextLine();
                 System.out.println(printActiveBoard(userBoard,"",0,0,userBoard.getDimension()));
                 String instruction=sc.nextLine();
                 startPlaying(userBoard,parts[4],0,instruction);
-                System.out.println("The game has ended!");
+                System.out.println("The game has ended!\n");
             }
             else{
                 System.out.println("Please register valid parameters\n");

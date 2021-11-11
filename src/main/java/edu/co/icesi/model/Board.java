@@ -25,7 +25,7 @@ public class Board {
      * @param numRows
      * @param numColumns
      */
-    public Board(int numRows, int numColumns, int numSnakes, int numLadders, int numPlayers) {
+    public Board(int numRows, int numColumns, int numSnakes, int numLadders) {
         this.numRows = numRows;
         this.numColumns = numColumns;
         this.dimension = numColumns*numRows;
@@ -256,10 +256,6 @@ public class Board {
 
     public Node getHead() {
         return head;
-    }
-
-    private int getInitPosition(){
-        return (int) (Math.random()*dimension+1);
     }
 
     public int getNumRows() {
