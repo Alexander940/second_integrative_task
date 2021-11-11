@@ -7,13 +7,14 @@ import java.util.Scanner;
 public class Main {
 
     private Scanner sc;
-    public Board board;
+    private int movementsToWin;
     private Board userBoard;
     /**
      * This is the constructor
      */
     public Main() {
         sc = new Scanner(System.in);
+        movementsToWin=0;
     }
 
     /**
@@ -50,7 +51,7 @@ public class Main {
                 sc.nextLine();
                 System.out.println(printActiveBoard(userBoard,"",0,0,userBoard.getDimension()));
                 String instruction=sc.nextLine();
-                startPlaying(userBoard,parts[4],0,instruction,createMovementString(parts[4],0,""));
+                startPlaying(userBoard,parts[4],0,instruction);
                 System.out.println("The game has ended!");
             }
             else{
@@ -64,11 +65,11 @@ public class Main {
         }
     }
 
-    private void startPlaying(Board currentBoard,String players,int i,String instruction,String movements){
+    private void startPlaying(Board currentBoard,String players,int i,String instruction){
         if(instruction.equalsIgnoreCase("num")){
             System.out.println(printActiveBoardNum(currentBoard,"",0,0, currentBoard.getDimension()));
             instruction= sc.nextLine();
-            startPlaying(currentBoard,players,i,instruction,movements);
+            startPlaying(currentBoard,players,i,instruction);
         }
         else if(instruction.equalsIgnoreCase("menu")){
             menu();
@@ -77,17 +78,20 @@ public class Main {
         else if(currentBoard.getFinishGame()==false){
                 if(i<players.length()){
                     System.out.println(currentBoard.movePlayer(players.charAt(i)));
+                    movementsToWin++;
                     if(currentBoard.getFinishGame()==true) {
+                        int totalMovements=returnMovementsToWin(players.length());
+                        System.out.println("With " + totalMovements + " movements\n");
+                        movementsToWin=0;
                         return;
                     }
                     else {
                         System.out.println(printActiveBoard(currentBoard, "", 0, 0, currentBoard.getDimension()));
                         instruction= sc.nextLine();
-                        movements.charAt(i)
-                        startPlaying(currentBoard,players,i+1,instruction,movements);
+                        startPlaying(currentBoard,players,i+1,instruction);
                     }
                 }
-            startPlaying(currentBoard,players,0,"",movements);
+            startPlaying(currentBoard,players,0,"");
         }
     }
 
@@ -178,11 +182,11 @@ public class Main {
         return msg;
     }
 
-    private String createMovementString(String players,int i,String msg){
-        if(i<players.length()){
-            msg+=0;
-            createMovementString(players,i+1,msg);
+    private int returnMovementsToWin(int i){
+        if(movementsToWin%i!=0){
+            movementsToWin++;
+            returnMovementsToWin(i);
         }
-        return msg;
+        return movementsToWin/i;
     }
 }
