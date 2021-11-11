@@ -50,7 +50,7 @@ public class Main {
                 sc.nextLine();
                 System.out.println(printActiveBoard(userBoard,"",0,0,userBoard.getDimension()));
                 String instruction=sc.nextLine();
-                startPlaying(userBoard,parts[4],0,instruction);
+                startPlaying(userBoard,parts[4],0,instruction,createMovementString(parts[4],0,""));
                 System.out.println("The game has ended!");
             }
             else{
@@ -64,11 +64,11 @@ public class Main {
         }
     }
 
-    private void startPlaying(Board currentBoard,String players,int i,String instruction){
+    private void startPlaying(Board currentBoard,String players,int i,String instruction,String movements){
         if(instruction.equalsIgnoreCase("num")){
-            System.out.println(printBoard(currentBoard,"",0,0, currentBoard.getDimension(),players));
+            System.out.println(printActiveBoardNum(currentBoard,"",0,0, currentBoard.getDimension()));
             instruction= sc.nextLine();
-            startPlaying(currentBoard,players,i,instruction);
+            startPlaying(currentBoard,players,i,instruction,movements);
         }
         else if(instruction.equalsIgnoreCase("menu")){
             menu();
@@ -83,10 +83,11 @@ public class Main {
                     else {
                         System.out.println(printActiveBoard(currentBoard, "", 0, 0, currentBoard.getDimension()));
                         instruction= sc.nextLine();
-                        startPlaying(currentBoard,players,i+1,instruction);
+                        movements.charAt(i)
+                        startPlaying(currentBoard,players,i+1,instruction,movements);
                     }
                 }
-            startPlaying(currentBoard,players,0,"");
+            startPlaying(currentBoard,players,0,"",movements);
         }
     }
 
@@ -144,6 +145,43 @@ public class Main {
             }
             msg+="\n";
             return printActiveBoard(boardToPrint,msg,0,cols+1,nodes);
+        }
+        return msg;
+    }
+
+    private String printActiveBoardNum(Board boardToPrint,String msg,int rows,int cols,int nodes){
+        if(cols<boardToPrint.getNumColumns()){
+            if(rows<boardToPrint.getNumRows()){
+                msg+="[" + nodes;
+                if(boardToPrint.get(nodes,1,boardToPrint.getHead()).getSnakeHead()!=null){
+                    msg+=boardToPrint.get(nodes,1,boardToPrint.getHead()).getSnake();
+                }
+                else if(boardToPrint.get(nodes,1,boardToPrint.getHead()).getSnakeTail()!=null){
+                    msg+=boardToPrint.get(nodes,1,boardToPrint.getHead()).getSnake();
+                }
+                else if(boardToPrint.get(nodes,1,boardToPrint.getHead()).getLadderBottom()!=null){
+                    msg+=boardToPrint.get(nodes,1,boardToPrint.getHead()).getLadder();
+                }
+                else if(boardToPrint.get(nodes,1,boardToPrint.getHead()).getLadderTop()!=null){
+                    msg+=boardToPrint.get(nodes,1,boardToPrint.getHead()).getLadder();
+                }
+
+                if(boardToPrint.get(nodes,1,boardToPrint.getHead()).getPlayersOnNode()!=null){
+                    msg+=boardToPrint.get(nodes,1,boardToPrint.getHead()).getPlayersOnNode();
+                }
+                msg+="] ";
+                return printActiveBoard(boardToPrint,msg,rows+1,cols,nodes-1);
+            }
+            msg+="\n";
+            return printActiveBoard(boardToPrint,msg,0,cols+1,nodes);
+        }
+        return msg;
+    }
+
+    private String createMovementString(String players,int i,String msg){
+        if(i<players.length()){
+            msg+=0;
+            createMovementString(players,i+1,msg);
         }
         return msg;
     }
