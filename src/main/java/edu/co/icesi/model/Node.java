@@ -90,17 +90,4 @@ public class Node {
     public void setPlayersOnNode(String playersOnNode) {
         this.playersOnNode = playersOnNode;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Node node = (Node) o;
-        return position == node.position && Objects.equals(next, node.next) && Objects.equals(prev, node.prev) && Objects.equals(ladder, node.ladder) && Objects.equals(snakeHead, node.snakeHead) && Objects.equals(snakeTail, node.snakeTail);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(position, next, prev, ladder, snakeHead, snakeTail);
-    }
 }

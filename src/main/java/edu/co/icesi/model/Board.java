@@ -125,7 +125,7 @@ public class Board {
         }
     }
 
-    public boolean verify(int init,int end,int lowerLimit){
+    private boolean verify(int init,int end,int lowerLimit){
         if(lowerLimit<dimension) {
             int upperLimit=lowerLimit+numRows;
             if (init <= upperLimit && init > lowerLimit) {
@@ -231,7 +231,7 @@ public class Board {
         return playersOnNode;
     }
 
-    public int rollDice(){
+    private int rollDice(){
         int diceValue = (int)(Math.random()*6)+1;
         if(diceValue>6){
             rollDice();
