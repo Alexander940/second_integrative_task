@@ -9,12 +9,14 @@ public class Main {
     private Scanner sc;
     private int movementsToWin;
     private Board userBoard;
+    private boolean goToMenu;
     /**
      * This is the constructor
      */
     public Main() {
         sc = new Scanner(System.in);
         movementsToWin=0;
+        goToMenu=false;
     }
 
     /**
@@ -36,10 +38,13 @@ public class Main {
             initializeGame();
             menu();
         }
-        System.out.println("Goodbye\n");
+        else if(goToMenu==true) {
+            System.out.println("Goodbye\n");
+        }
     }
 
     private void initializeGame(){
+        goToMenu=false;
         System.out.println("Please register the parameters for this game\n" + "*Please create a board bigger than 3*2/2*3*");
         String board= sc.nextLine();
         String[] parts = board.split(" ");
@@ -52,7 +57,9 @@ public class Main {
                 System.out.println(printActiveBoard(userBoard,"",0,0,userBoard.getDimension()));
                 String instruction=sc.nextLine();
                 startPlaying(userBoard,parts[4],0,instruction);
-                System.out.println("The game has ended!\n");
+                if(userBoard.getFinishGame()==true) {
+                    System.out.println("The game has ended!\n");
+                }
             }
             else{
                 System.out.println("Please register valid parameters\n");
@@ -72,10 +79,10 @@ public class Main {
             startPlaying(currentBoard,players,i,instruction);
         }
         else if(instruction.equalsIgnoreCase("menu")){
-            menu();
+            goToMenu=true;
             return;
         }
-        else if(currentBoard.getFinishGame()==false){
+        else if(currentBoard.getFinishGame()==false && goToMenu==false){
                 if(i<players.length()){
                     System.out.println(currentBoard.movePlayer(players.charAt(i)));
                     movementsToWin++;
